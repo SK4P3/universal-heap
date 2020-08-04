@@ -42,43 +42,42 @@ public class Heap {
     public Object extractFirst() {
 
         if (list.size() == 0) {
-
-            throw new IllegalStateException("Heap is EMPTY");
+            throw new IllegalStateException("Heap is empty");
         } else if (list.size() == 1) {
 
-            Object min = list.remove(0);
-            return min;
+            Object obj = list.remove(0);
+            return obj;
         }
 
-        Object min = list.get(0);
+        Object obj = list.get(0);
         Object lastItem = list.remove(list.size() - 1);
         list.set(0, lastItem);
 
         heapify(0);
 
-        return min;
+        return obj;
     }
 
     private void heapify(int i) {
 
         int leftIdx = getLeftIdx(i);
         int rightIdx = getRightIdx(i);
-        int smallest = -1;
+        int num = -1;
 
         if (leftIdx <= list.size() - 1 && cmp.compare(list.get(leftIdx), list.get(i)) < 0) {
-            smallest = leftIdx;
+            num = leftIdx;
         } else {
-            smallest = i;
+            num = i;
         }
 
-        if (rightIdx <= list.size() - 1 && cmp.compare(list.get(rightIdx), list.get(smallest)) < 0) {
-            smallest = rightIdx;
+        if (rightIdx <= list.size() - 1 && cmp.compare(list.get(rightIdx), list.get(num)) < 0) {
+            num = rightIdx;
         }
 
-        if (smallest != i) {
+        if (num != i) {
 
-            swap(i, smallest);
-            heapify(smallest);
+            swap(i, num);
+            heapify(num);
         }
     }
 
