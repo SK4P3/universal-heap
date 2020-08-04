@@ -13,9 +13,9 @@ public class Heap {
 
     }
 
-    public Heap(ArrayList<Object> items) {
-
+    public Heap(ArrayList<Object> items, Comparator<Object> cmp) {
         this.list = items;
+        this.cmp = cmp;
         buildHeap();
     }
 
@@ -25,7 +25,7 @@ public class Heap {
         int lastIdx = list.size() - 1;
         int parentIdx = getParentIdx(lastIdx);
 
-        while (parentIdx != lastIdx && cmp.compare(list.get(lastIdx), list.get(parentIdx)) < 0) { //list.get(lastIdx).getFrequency() < list.get(parentIdx).getFrequency()) {
+        while (parentIdx != lastIdx && cmp.compare(list.get(lastIdx), list.get(parentIdx)) < 0) {
 
             swap(lastIdx, parentIdx);
             lastIdx = parentIdx;
@@ -39,7 +39,7 @@ public class Heap {
         }
     }
 
-    public Object extractMin() {
+    public Object extractFirst() {
 
         if (list.size() == 0) {
 
@@ -50,15 +50,12 @@ public class Heap {
             return min;
         }
 
-        // remove the last item ,and set it as new root
         Object min = list.get(0);
         Object lastItem = list.remove(list.size() - 1);
         list.set(0, lastItem);
 
-        // bubble-down until heap property is maintained
         heapify(0);
 
-        // return min key
         return min;
     }
 
@@ -68,18 +65,16 @@ public class Heap {
         int rightIdx = getRightIdx(i);
         int smallest = -1;
 
-        // find the smallest key between current node and its children.
-        if (leftIdx <= list.size() - 1 && cmp.compare(list.get(leftIdx), list.get(i)) < 0) { //list.get(leftIdx).getFrequency() < list.get(i).getFrequency()) {
+        if (leftIdx <= list.size() - 1 && cmp.compare(list.get(leftIdx), list.get(i)) < 0) {
             smallest = leftIdx;
         } else {
             smallest = i;
         }
 
-        if (rightIdx <= list.size() - 1 && cmp.compare(list.get(rightIdx), list.get(smallest)) < 0) { //list.get(rightIdx).getFrequency() < list.get(smallest).getFrequency()) {
+        if (rightIdx <= list.size() - 1 && cmp.compare(list.get(rightIdx), list.get(smallest)) < 0) {
             smallest = rightIdx;
         }
 
-        // if the smallest key is not the current key then bubble-down it.
         if (smallest != i) {
 
             swap(i, smallest);
